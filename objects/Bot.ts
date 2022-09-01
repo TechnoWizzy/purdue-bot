@@ -3,7 +3,6 @@ import * as config from "../config.json";
 import Logger from "./Logger";
 import * as fs from "fs";
 import Database from "./Database";
-import Encrypter from "./Encrypter";
 
 const options = {
     intents: [
@@ -18,7 +17,6 @@ export default class Bot extends Client {
 
     private _guild: Guild;
     private _logger: Logger;
-    private _encrypter: Encrypter;
     private _commands: Collection<any, any>;
     private _logChannel: TextChannel;
 
@@ -51,14 +49,6 @@ export default class Bot extends Client {
         this._commands = value;
     }
 
-    get encrypter(): Encrypter {
-        return this._encrypter;
-    }
-
-    set encrypter(value: Encrypter) {
-        this._encrypter = value;
-    }
-
     get logChannel() {
         return this._logChannel;
     }
@@ -71,7 +61,6 @@ export default class Bot extends Client {
         this.guild = await this.guilds.fetch(config.guild);
         this.logChannel = await this._guild.channels.fetch(config.channels.log) as TextChannel;
         this.logger = new Logger(this._logChannel);
-        Encrypter.refresh();
         await this.updateCommands(config.token);
         await new Database().init();
         await this.logChannel.permissionOverwrites.create("751910711218667562",

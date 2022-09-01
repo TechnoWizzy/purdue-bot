@@ -4,11 +4,11 @@ import * as config from "../config.json";
 
 export default class Encrypter {
     protected constructor() {
-        bot.encrypter = this;
+
     }
 
-    public static refresh() {
-        new Encrypter();
+    public static getInstance(): Encrypter {
+        return new Encrypter();
     }
 
     /**

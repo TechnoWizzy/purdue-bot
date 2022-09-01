@@ -12,6 +12,7 @@ import Student from "./objects/Student";
 import {collections} from "./objects/Database";
 import Email from "./objects/Email";
 import VerificationModal from "./objects/modals/Verification.Modal";
+import Encrypter from "./objects/Encrypter";
 
 export const bot = new Bot();
 
@@ -93,8 +94,9 @@ async function handleModal(interaction: ModalSubmitInteraction) {
                 await interaction.reply({content: "This email is already in use.", ephemeral: true});
             } else {
                 if (email.isValid) {
+                    const encrypter = Encrypter.getInstance();
                     const username = interaction.user.username;
-                    const hash = bot.encrypter.encrypt(`${interaction.user.id}-${Date.now()}`);
+                    const hash = encrypter.encrypt(`${interaction.user.id}-${Date.now()}`);
                     const token = `${hash.iv}-${hash.content}`;
                     const url = `https://www.technowizzy.dev/api/v1/students/verify/${token}`;
                     await email.send(url);
