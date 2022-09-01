@@ -17,8 +17,8 @@ export default class Encrypter {
      */
     public encrypt(text) {
 
-        const iv = crypto.randomBytes(16);
-        const cipher = crypto.createCipheriv("aes-256-ctr", config.key, iv);
+        const iv = crypto.randomBytes(config.encryption.bytes);
+        const cipher = crypto.createCipheriv(config.encryption.algorithm, config.encryption.key, iv);
         const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
 
         return {
